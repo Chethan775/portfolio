@@ -1,5 +1,6 @@
-import { Mail, Phone, MapPin, Send } from 'lucide-react';
+import { Mail, Phone, MapPin, Send, Github, Linkedin } from 'lucide-react';
 import { useState } from 'react';
+import { motion } from 'framer-motion';
 
 interface ContactProps {
   darkMode: boolean;
@@ -32,16 +33,28 @@ export default function Contact({ darkMode }: ContactProps) {
 
   const contactInfo = [
     {
+      icon: Phone,
+      label: 'Phone',
+      value: '+91 9972337742',
+      href: 'tel:+919972337742',
+    },
+    {
       icon: Mail,
       label: 'Email',
       value: 'schethan775@gmail.com',
       href: 'mailto:schethan775@gmail.com',
     },
     {
-      icon: Phone,
-      label: 'Phone',
-      value: '91XXXXXXXXXX',
-      href: 'tel:91XXXXXXXXXX',
+      icon: Linkedin,
+      label: 'LinkedIn',
+      value: 'Chethan S',
+      href: 'https://www.linkedin.com/in/aichethan',
+    },
+    {
+      icon: Github,
+      label: 'GitHub',
+      value: 'Chethan775',
+      href: 'https://github.com/Chethan775',
     },
     {
       icon: MapPin,
@@ -51,18 +64,44 @@ export default function Contact({ darkMode }: ContactProps) {
     },
   ];
 
+  const containerVariants = {
+    hidden: { opacity: 0 },
+    visible: {
+      opacity: 1,
+      transition: {
+        staggerChildren: 0.1,
+      },
+    },
+  };
+
+  const itemVariants = {
+    hidden: { opacity: 0, y: 20 },
+    visible: { opacity: 1, y: 0 },
+  };
+
   return (
-    <section id="contact" className={`py-20 ${darkMode ? 'bg-gray-800' : 'bg-gray-50'}`}>
+    <section id="contact" className={`py-20 overflow-hidden ${darkMode ? 'bg-gray-800' : 'bg-gray-50'}`}>
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-        <div className="text-center mb-16">
+        <motion.div
+          className="text-center mb-16"
+          initial={{ opacity: 0, y: -20 }}
+          whileInView={{ opacity: 1, y: 0 }}
+          viewport={{ once: true }}
+          transition={{ duration: 0.6 }}
+        >
           <h2 className={`text-4xl font-bold ${darkMode ? 'text-white' : 'text-gray-900'} mb-4`}>
             Get In Touch
           </h2>
           <div className="w-20 h-1 bg-blue-500 mx-auto rounded-full"></div>
-        </div>
+        </motion.div>
 
         <div className="grid grid-cols-1 lg:grid-cols-2 gap-12 max-w-6xl mx-auto">
-          <div>
+          <motion.div
+            variants={containerVariants}
+            initial="hidden"
+            whileInView="visible"
+            viewport={{ once: true }}
+          >
             <h3 className={`text-2xl font-bold ${darkMode ? 'text-white' : 'text-gray-900'} mb-6`}>
               Contact Information
             </h3>
@@ -71,7 +110,8 @@ export default function Contact({ darkMode }: ContactProps) {
               {contactInfo.map((info, index) => {
                 const Icon = info.icon;
                 const content = (
-                  <div
+                  <motion.div
+                    variants={itemVariants}
                     className={`flex items-center gap-4 p-4 rounded-lg ${darkMode ? 'bg-gray-900' : 'bg-white'} shadow-md hover:shadow-lg transition-shadow duration-300`}
                   >
                     <div className={`${darkMode ? 'bg-blue-500/10' : 'bg-blue-100'} p-3 rounded-lg`}>
@@ -85,11 +125,11 @@ export default function Contact({ darkMode }: ContactProps) {
                         {info.value}
                       </p>
                     </div>
-                  </div>
+                  </motion.div>
                 );
 
                 return info.href ? (
-                  <a key={index} href={info.href} className="block">
+                  <a key={index} href={info.href} target={info.href.startsWith('http') ? '_blank' : undefined} rel="noopener noreferrer" className="block">
                     {content}
                   </a>
                 ) : (
@@ -97,9 +137,14 @@ export default function Contact({ darkMode }: ContactProps) {
                 );
               })}
             </div>
-          </div>
+          </motion.div>
 
-          <div>
+          <motion.div
+            initial={{ opacity: 0, x: 50 }}
+            whileInView={{ opacity: 1, x: 0 }}
+            viewport={{ once: true }}
+            transition={{ duration: 0.6 }}
+          >
             <h3 className={`text-2xl font-bold ${darkMode ? 'text-white' : 'text-gray-900'} mb-6`}>
               Send a Message
             </h3>
@@ -159,15 +204,17 @@ export default function Contact({ darkMode }: ContactProps) {
                 ></textarea>
               </div>
 
-              <button
+              <motion.button
+                whileHover={{ scale: 1.05 }}
+                whileTap={{ scale: 0.95 }}
                 type="submit"
-                className="w-full px-6 py-3 bg-blue-500 hover:bg-blue-600 text-white rounded-lg font-semibold transition-all duration-300 hover:scale-105 shadow-lg hover:shadow-xl flex items-center justify-center gap-2"
+                className="w-full px-6 py-3 bg-blue-500 hover:bg-blue-600 text-white rounded-lg font-semibold transition-all duration-300 shadow-lg hover:shadow-xl flex items-center justify-center gap-2"
               >
                 <Send size={20} />
                 {submitted ? 'Message Sent!' : 'Send Message'}
-              </button>
+              </motion.button>
             </form>
-          </div>
+          </motion.div>
         </div>
       </div>
     </section>
